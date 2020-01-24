@@ -39,7 +39,7 @@ do
     fi
 done
 
-HAN_FILE=Unihan.tar.gz
+HAN_FILE=Unihan.txt.gz
 if [ -f "${OUTPUT_DIR}/${HAN_FILE}" ]; then
     echo "WARNING: ${HAN_FILE} has already been created"
 else
