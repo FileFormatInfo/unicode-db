@@ -39,4 +39,12 @@ do
     fi
 done
 
+HAN_FILE=Unihan.tar.gz
+if [ -f "${OUTPUT_DIR}/${HAN_FILE}" ]; then
+    echo "WARNING: ${HAN_FILE} has already been created"
+else
+    echo "INFO: creating ${HAN_FILE}"
+    unzip -p ${TMP_DIR}/Unihan.zip "Unihan_*" | gzip >${OUTPUT_DIR}/${HAN_FILE}
+fi
+
 echo "INFO: extract complete at $(date -u +%Y-%m-%dT%H:%M:%SZ)"

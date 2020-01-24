@@ -28,7 +28,7 @@ do
         echo "INFO: downloading ${FILE}"
         curl \
             --silent \
-            https://unicode.org/Public/zipped/latest/UCD.zip \
+            https://unicode.org/Public/zipped/latest/${FILE} \
             >${TMP_DIR}/${FILE}
     fi
 done
