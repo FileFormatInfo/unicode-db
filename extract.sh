@@ -23,15 +23,16 @@ else
     mkdir -p ${OUTPUT_DIR}
 fi
 
-FILES=( Blocks.txt DerivedAge.txt EmojiSources.txt Index.txt NamesList.txt NormalizationTest.txt PropList.txt UnicodeData.txt )
+FILES=( Blocks.txt DerivedAge.txt emoji/emoji-data.txt emoji/emoji-variation-sequences.txt EmojiSources.txt Index.txt NamesList.txt NormalizationTest.txt PropList.txt UnicodeData.txt )
 for FILE in "${FILES[@]}"
 do 
-    if [ -f "${OUTPUT_DIR}/${FILE}" ]; then
+    if [ -f "${OUTPUT_DIR}/$(basename ${FILE})" ]; then
         echo "WARNING: ${FILE} has already been extracted"
     else
         echo "INFO: extracting ${FILE}"
         unzip \
             -b \
+            -j \
             -q \
             ${TMP_DIR}/UCD.zip \
             ${FILE} \

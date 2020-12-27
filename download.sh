@@ -27,8 +27,29 @@ do
     else
         echo "INFO: downloading ${FILE}"
         curl \
+            --fail \
+            --location \
+            --show-error \
             --silent \
             https://unicode.org/Public/zipped/latest/${FILE} \
+            >${TMP_DIR}/${FILE}
+    fi
+done
+
+FILES=( emoji-sequences.txt emoji-zwj-sequences.txt emoji-test.txt )
+
+for FILE in "${FILES[@]}"
+do 
+    if [ -f "${TMP_DIR}/${FILE}" ]; then
+        echo "WARNING: ${FILE} has already been downloaded"
+    else
+        echo "INFO: downloading ${FILE}"
+        curl \
+            --fail \
+            --location \
+            --show-error \
+            --silent \
+            https://unicode.org/Public/emoji/latest/${FILE} \
             >${TMP_DIR}/${FILE}
     fi
 done
