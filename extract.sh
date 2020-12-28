@@ -48,4 +48,15 @@ else
     unzip -p ${TMP_DIR}/Unihan.zip "Unihan_*" | gzip >${OUTPUT_DIR}/${HAN_FILE}
 fi
 
+EMOJI_FILES=( emoji-sequences.txt emoji-zwj-sequences.txt emoji-test.txt )
+for EMOJI_FILE in "${EMOJI_FILES[@]}"
+do 
+    if [ -f "${OUTPUT_DIR}/${EMOJI_FILE}" ]; then
+        echo "WARNING: ${FILE} has already been copied"
+    else
+        echo "INFO: copying ${EMOJI_FILE}"
+        cp "${TMP_DIR}/${EMOJI_FILE}" "${OUTPUT_DIR}/${EMOJI_FILE}"
+    fi
+done
+
 echo "INFO: extract complete at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
