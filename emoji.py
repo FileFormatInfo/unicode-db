@@ -39,7 +39,7 @@ def to_hex(i):
         return "%04x" % i
 
 def to_handle(s):
-    return re.sub(r'[^a-z]+', '_', s.strip().lower()).strip('_')
+    return re.sub(r'[^a-z0-9]+', '_', s.strip().lower()).strip('_')
 
 emojis = collections.OrderedDict()
 
@@ -76,7 +76,9 @@ for rawline in f:
         emoji = emojis[codepoint] 
     else:
         emoji = {}
-        emoji['codepoints'] = matcher.group(1).replace(' FE0F', '').strip().lower()
+        emoji['codepoints'] = [ matcher.group(1).replace(' FE0F', '').strip().lower() ]
+        if ' FEOF' in matcher.group(1):
+            emoji['codepoints'].append(matcher.group(1).strip().lower())
         #emoji['status'] = matcher.group(2).strip()
         #emoji['chars'] = matcher.group(3)
         emoji['version'] = matcher.group(4)
@@ -163,6 +165,26 @@ sys.stdout.write("INFO: complete %d lines processed\n" % line_count)
 sys.stdout.write("INFO: complete %d emoji processed\n" % emoji_count)
 sys.stdout.write("INFO: complete %d emoji added\n" % new_count)
 sys.stdout.write("INFO: total emoji: %d\n" % len(emojis))
+
+# WTF: why does my own static website return 403 for the default user-agent?!?!?
+req = urllib.request.Request("https://emoji.fileformat.info/emoji-images.json", None, {'User-Agent': 'FileFormatInfo/1.0'})
+try: 
+    response = urllib.request.urlopen(req)
+except urllib.error.URLError as e:
+    print(e)  
+
+images = json.loads(response.read())
+sys.stdout.write("INFO: %d images\n" % len(images))
+
+for image in images.keys():
+    if image not in emojis:
+        sys.stdout.write("WARNING: no emoji for %s\n" % image)
+
+for emoji in emojis.keys():
+    if emoji not in images:
+        sys.stdout.write("WARNING: no image for %s\n" % emoji)
+    else:
+        emojis[emoji]['image'] = True
 
 #
 # hack for missing 20e3
