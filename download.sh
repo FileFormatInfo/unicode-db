@@ -54,4 +54,26 @@ do
     fi
 done
 
+FILE=ucd.all.flat.zip
+if [ -f "${TMP_DIR}/${FILE}" ]; then
+	echo "WARNING: ${FILE} has already been downloaded"
+else
+	echo "INFO: downloading ${FILE}"
+
+	curl \
+		--fail \
+		--location \
+		--output "${TMP_DIR}/${FILE}" \
+		--show-error \
+		--silent \
+		"https://www.unicode.org/Public/latest/ucdxml/${FILE}"
+fi
+
+cd ${TMP_DIR}
+unzip -j UCD.zip --exclude "ReadMe.txt"
+unzip -j ucd.all.flat.zip
+
+echo "INFO: converting ucd to json"
+yq -p=xml -o=json "${TMP_DIR}/ucd.all.flat.xml" > "${TMP_DIR}/ucd.all.flat.json"
+
 echo "INFO: download complete at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
