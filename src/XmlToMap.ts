@@ -142,6 +142,9 @@ async function XmlToMap(xmlPath: string) {
 		var name = charData.na || charData.na1;
 		if (!name && charData['name-alias']) {
 			name = charData['name-alias'][0].alias;
+			console.log(
+				`WARN: codepoint ${charData.cp} missing name, using name-alias '${name}'`
+			);
 		}
 
 		if (name.endsWith('#')) {
@@ -185,19 +188,59 @@ async function XmlToMap(xmlPath: string) {
 			console.log(`INFO: name-alias data: ${JSON.stringify(charData['name-alias'])}`);
 		}
 
+		if (charData.JSN && charData.JSN.length > 0) {
+			notes.push(`Hangul Syllable Type: ${charData.JSN}`);
+		}
+
+		const caseVariants: { [key: string]: string[] } = {};
+		if (charData.suc && charData.suc.length > 0 && charData.suc !== "#") {
+			caseVariants["uppercase"] = [ charData.ucp ];
+		}
+		if (charData.slc && charData.slc.length > 0 && charData.slc !== "#") {
+			caseVariants["lowercase"] = [ charData.lcp ];
+		}
+		if (charData.stc && charData.stc.length > 0 && charData.stc !== "#") {
+			caseVariants["titlecase"] = [ charData.tcp ];
+		}
+		if (charData.uc && charData.uc.length > 0 && charData.uc !== "#") {
+			caseVariants["uppercase"] = charData.uc.split(" ");
+		}
+		if (charData.lc && charData.lc.length > 0 && charData.lc !== "#") {
+			caseVariants["lowercase"] = charData.lc.split(" ");
+		}
+		if (charData.tc && charData.tc.length > 0 && charData.tc !== "#") {
+			caseVariants["titlecase"] = charData.tc.split(" ");
+		}
+		var decomposition: string[] | undefined = undefined;
+		if (charData.dm && charData.dm.length > 0 && charData.dm !== "#") {
+			decomposition = charData.dm.split(" ");
+		}
+
+		if (charData.bpt && charData.bpt.length > 0 && charData.bpt !== 'n') {
+			notes.push(`Bidi Paired Bracket Type: ${charData.bpt == 'o' ? 'Open' : 'Closed'}`);
+			notes.push(`Bidi Paired Bracket: U+${charData.bpb}`);
+		}
+
 		var cpData: CodepointData = {
-			code: charData.cp,
 			name,
+			title: charData.na1 || name,
 			age: charData.age,
+			bidi: charData.bc,
 			block: charData.blk,
+			caseVariants: Object.keys(caseVariants).length > 0 ? caseVariants : undefined,
 			category: charData.gc,
+			code: charData.cp,
+			combine: charData.ccc, 
+			decomposition,
+			mirror: charData.bmg === '' ? undefined : charData.bmg,
+			oldname: charData.na1 === '' ? undefined : charData.na1,
 			script: charData.sc,
 			tags,
 			notes,
 			comments: [],
 			indexEntries: [],
-			related : [],
-			variants : [],
+			related: [],
+			variants: [],
 		};
 
 		cpMap[charData.cp] = cpData;

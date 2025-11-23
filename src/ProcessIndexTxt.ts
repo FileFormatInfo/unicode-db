@@ -36,11 +36,6 @@ async function ProcessIndexTxt( filePath: string, cpMap: {[code: string]: Codepo
 				continue;
 			}
 
-			if (cpData.name == indexEntry) {
-				// console.log(`DEBUG: skipping index entry ${indexEntry} for code ${code} since it is the same as the name`);
-				continue;
-			}
-
 			if (!cpData.indexEntries) {
 				cpData.indexEntries = [];
 			}

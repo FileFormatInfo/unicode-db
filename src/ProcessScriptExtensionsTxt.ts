@@ -40,7 +40,7 @@ async function ProcessScriptExtensionsTxt(
 				endCode = startCode;
 			}
 
-			console.log(`DEBUG: processing codepoints ${codes} (${startCode}-${endCode}) for scripts ${scripts.join(", ")}`);
+			//console.log(`DEBUG: processing codepoints ${codes} (${startCode}-${endCode}) for scripts ${scripts.join(", ")}`);
 
 			for (let cp = startCode; cp <= endCode; cp++) {
 				const codeHex = cp.toString(16).toUpperCase().padStart(4, "0");

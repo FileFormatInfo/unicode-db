@@ -70,10 +70,7 @@ else
 fi
 
 cd ${TMP_DIR}
-unzip -j UCD.zip --exclude "ReadMe.txt"
+unzip -j UCD.zip -x ReadMe.txt -x emoji/ReadMe.txt
 unzip -j ucd.all.flat.zip
-
-echo "INFO: converting ucd to json"
-yq -p=xml -o=json "${TMP_DIR}/ucd.all.flat.xml" > "${TMP_DIR}/ucd.all.flat.json"
 
 echo "INFO: download complete at $(date -u +%Y-%m-%dT%H:%M:%SZ)"

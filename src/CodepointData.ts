@@ -1,17 +1,24 @@
 type CodepointData = {
-	code: string;
-	name: string;
 	age: string;
-	block: string;
-	category: string;
-	script: string;
 	approximations?: string[];
+	bidi: string;
+	block: string;
+	caseVariants?: { [key: string]: string[] };
+	category: string;
+	code: string;
+	combine: string;
 	comments?: string[];
+	decomposition?: string[];
 	indexEntries?: string[];
+	mirror?: string;
+	name: string;
 	notes?: string[];
+	oldname?: string;
 	related?: string[];
+	script: string;
 	scriptExtensions?: string[];
 	tags?: string[];
+	title: string;
 	variants?: string[];
 };
 
