@@ -32,7 +32,7 @@ async function XmlToMap(xmlPath: string) {
 
 	console.log(`INFO: parsed ${jsonObj.ucd.repertoire.char.length} characters`);
 
-	if (true) {
+	if (false) {
 		const allJsonPath = path.join(__dirname, "..", "tmp", "ucd.all.flat.json");
 		console.log(`INFO: writing full JSON data to ${allJsonPath}`);
 		await fs.writeFile(

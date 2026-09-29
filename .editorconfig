@@ -8,6 +8,7 @@ end_of_line = lf
 charset = utf-8
 indent_size = 4
 indent_style = tab
+max_line_length = 144
 
 [*.yaml]
 indent_size = 2
